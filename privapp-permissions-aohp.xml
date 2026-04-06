@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="utf-8"?>
+<permissions>
+    <privapp-permissions package="com.example.ruyiclient">
+        <permission name="android.permission.MANAGE_AOHP_VIRTUAL_DISPLAY" />
+        <!-- Required for platform-signed priv-app; otherwise system_server aborts at systemReady. -->
+        <permission name="android.permission.SCHEDULE_EXACT_ALARM" />
+    </privapp-permissions>
+</permissions>

@@ -1,0 +1,27 @@
+package {
+    default_applicable_licenses: ["Android-Apache-2.0"],
+}
+
+// Prebuilt AOHP agent APK: build from ../../aohp-app/AOHPAgentDriver with Gradle, then:
+//   cp <gradle-output>.apk packages/apps/AOHPAgentDriver/AOHPAgentDriver.apk
+// Soong re-signs with the platform key when certificate: "platform" is set.
+
+prebuilt_etc {
+    name: "privapp-permissions-aohp",
+    src: "privapp-permissions-aohp.xml",
+    sub_dir: "permissions",
+    // Default install name would be the module name (no .xml); SystemConfig only loads *.xml.
+    filename_from_src: true,
+}
+
+android_app_import {
+    name: "AOHPAgentDriver",
+    apk: "AOHPAgentDriver.apk",
+    certificate: "platform",
+    privileged: true,
+    // Match manifest uses-library-not-required from androidx.window (e.g. window_extensions.mk).
+    optional_uses_libs: [
+        "androidx.window.extensions",
+        "androidx.window.sidecar",
+    ],
+}
