@@ -1,0 +1,13 @@
+package {
+    default_applicable_licenses: ["Android-Apache-2.0"],
+}
+
+// Alpine Linux rootfs template with Python pre-installed.
+// Build with: ./prepare_rootfs.sh x86_64
+// Then place alpine.tar.gz in this directory before running the AOSP build.
+prebuilt_etc {
+    name: "aohp-rootfs-alpine",
+    src: "alpine.tar.gz",
+    sub_dir: "aohp/rootfs-templates",
+    filename: "alpine.tar.gz",
+}

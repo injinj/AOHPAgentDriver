@@ -3,8 +3,13 @@ package {
 }
 
 // Prebuilt AOHP agent APK: build from ../../aohp-app/AOHPAgentDriver with Gradle, then:
-//   cp <gradle-output>.apk packages/apps/AOHPAgentDriver/AOHPAgentDriver.apk
+//   ./gradlew :app:assembleDebug
+//   cp app/build/outputs/apk/debug/RuyiClient-debug.apk packages/apps/AOHPAgentDriver/AOHPAgentDriver.apk
 // Soong re-signs with the platform key when certificate: "platform" is set.
+//
+// IMPORTANT: IAohpContainer AIDL must match frameworks/base/.../IAohpContainer.aidl.
+// If you update the framework AIDL but keep an old APK here, the priv-app will crash with
+// NoSuchMethodError on Binder calls (e.g. createContainer return type mismatch).
 
 prebuilt_etc {
     name: "privapp-permissions-aohp",
