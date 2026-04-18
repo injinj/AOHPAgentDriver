@@ -2,6 +2,7 @@
 <permissions>
     <privapp-permissions package="com.example.ruyiclient">
         <permission name="android.permission.MANAGE_AOHP_VIRTUAL_DISPLAY" />
+        <permission name="android.permission.INJECT_EVENTS" />
         <!-- Required for platform-signed priv-app; otherwise system_server aborts at systemReady. -->
         <permission name="android.permission.SCHEDULE_EXACT_ALARM" />
     </privapp-permissions>
