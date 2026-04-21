@@ -5,5 +5,7 @@
         <permission name="android.permission.INJECT_EVENTS" />
         <!-- Required for platform-signed priv-app; otherwise system_server aborts at systemReady. -->
         <permission name="android.permission.SCHEDULE_EXACT_ALARM" />
+        <!-- Enable MyAccessibilityService via Settings.Secure on boot / app start (see SystemPrivilegeBootstrap). -->
+        <permission name="android.permission.WRITE_SECURE_SETTINGS" />
     </privapp-permissions>
 </permissions>
