@@ -4,7 +4,7 @@ package {
 
 // Prebuilt AOHP agent APK: build from ../../aohp-app/AOHPAgentDriver with Gradle, then:
 //   ./gradlew :app:assembleDebug
-//   cp app/build/outputs/apk/debug/RuyiClient-debug.apk packages/apps/AOHPAgentDriver/AOHPAgentDriver.apk
+//   cp app/build/outputs/apk/debug/AOHPAgentDriver-debug.apk packages/apps/AOHPAgentDriver/AOHPAgentDriver.apk
 // Soong re-signs with the platform key when certificate: "platform" is set.
 //
 // IMPORTANT: IAohpContainer AIDL must match frameworks/base/.../IAohpContainer.aidl.

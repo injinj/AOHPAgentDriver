@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <permissions>
-    <privapp-permissions package="com.example.ruyiclient">
+    <privapp-permissions package="org.aohp.agentdriver">
         <permission name="android.permission.MANAGE_AOHP_VIRTUAL_DISPLAY" />
         <permission name="android.permission.INJECT_EVENTS" />
         <!-- Required for platform-signed priv-app; otherwise system_server aborts at systemReady. -->
