@@ -8,4 +8,7 @@
         <!-- Enable MyAccessibilityService via Settings.Secure on boot / app start (see SystemPrivilegeBootstrap). -->
         <permission name="android.permission.WRITE_SECURE_SETTINGS" />
     </privapp-permissions>
+    <privapp-permissions package="com.aohp.security.consent">
+        <permission name="android.permission.MANAGE_AOHP_VIRTUAL_DISPLAY" />
+    </privapp-permissions>
 </permissions>
