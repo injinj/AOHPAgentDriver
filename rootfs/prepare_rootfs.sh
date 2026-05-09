@@ -141,6 +141,17 @@ cfg = rewrite(cfg)
 cfg.setdefault("agents", {}).setdefault("defaults", {}).setdefault(
     "workspace", "/root/.openclaw/workspace"
 )
+primary = cfg.get("agents", {}).get("defaults", {}).get("model", {}).get("primary")
+if isinstance(primary, str) and "/" in primary:
+    provider_id, model_id = primary.split("/", 1)
+    provider = cfg.setdefault("models", {}).setdefault("providers", {}).get(provider_id)
+    if isinstance(provider, dict) and isinstance(provider.get("models"), list):
+        for model in provider["models"]:
+            if isinstance(model, dict) and model.get("id") == model_id:
+                model["contextWindow"] = 256000
+                model["maxTokens"] = 32000
+                if "image" in model.get("input", []):
+                    cfg.setdefault("agents", {}).setdefault("defaults", {}).setdefault("imageModel", primary)
 extra = cfg.setdefault("skills", {}).setdefault("load", {}).setdefault("extraDirs", [])
 if "/opt/aohp-skills" not in extra:
     extra.append("/opt/aohp-skills")
