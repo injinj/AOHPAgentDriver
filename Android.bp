@@ -2,14 +2,11 @@ package {
     default_applicable_licenses: ["Android-Apache-2.0"],
 }
 
-// Prebuilt AOHP agent APK: build from ../../aohp-app/AOHPAgentDriver with Gradle, then:
-//   ./gradlew :app:assembleDebug
-//   cp app/build/outputs/apk/debug/AOHPAgentDriver-debug.apk packages/apps/AOHPAgentDriver/AOHPAgentDriver.apk
-// Soong re-signs with the platform key when certificate: "platform" is set.
+// Prebuilt AOHP agent APK: build from the Gradle AOHPAgentDriver project, then place the
+// output at packages/apps/AOHPAgentDriver/AOHPAgentDriver.apk. Soong re-signs it with
+// the platform key when certificate: "platform" is set.
 //
 // IMPORTANT: IAohpContainer AIDL must match frameworks/base/.../IAohpContainer.aidl.
-// If you update the framework AIDL but keep an old APK here, the priv-app will crash with
-// NoSuchMethodError on Binder calls (e.g. createContainer return type mismatch).
 
 prebuilt_etc {
     name: "privapp-permissions-aohp",
@@ -24,9 +21,16 @@ android_app_import {
     apk: "AOHPAgentDriver.apk",
     certificate: "platform",
     privileged: true,
-    // Match manifest uses-library-not-required from androidx.window (e.g. window_extensions.mk).
+    // Match manifest uses-library-not-required from AndroidX Window on modern builds.
     optional_uses_libs: [
         "androidx.window.extensions",
         "androidx.window.sidecar",
     ],
+}
+
+// Link this static library when building AgentDriver from Java sources (Gradle or AOSP module).
+java_library {
+    name: "aohp-agentdriver-security-rpc-bridge",
+    srcs: ["bridge/**/*.java"],
+    sdk_version: "system_current",
 }
