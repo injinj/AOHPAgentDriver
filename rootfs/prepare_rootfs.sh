@@ -106,6 +106,33 @@ embed_skills() {
   echo "[prepare_rootfs] embedded skills from ${src}"
 }
 
+embed_udagen() {
+  local src="${REPO_ROOT}/udagen"
+  if [[ ! -d "$src" ]]; then
+    echo "[prepare_rootfs] no udagen/ at repo root; skipping" >&2
+    return 0
+  fi
+  sudo rm -rf "${ROOTFS_DIR}/opt/udagen-lib"
+  sudo mkdir -p "${ROOTFS_DIR}/opt/udagen-lib/udagen"
+  sudo cp -a "$src/." "${ROOTFS_DIR}/opt/udagen-lib/udagen/"
+  sudo rm -rf "${ROOTFS_DIR}/opt/udagen-lib/udagen/__pycache__"
+  sudo mkdir -p "${ROOTFS_DIR}/opt/udagen/template-input"
+  sudo mkdir -p "${ROOTFS_DIR}/opt/udagen/workspace"
+  echo "[prepare_rootfs] embedded udagen from ${src}"
+
+  if [[ -x "${ROOTFS_DIR}/usr/bin/python3" ]]; then
+    echo "[prepare_rootfs] installing udagen Python deps (litellm, pydantic, pyyaml)..."
+    sudo chroot "${ROOTFS_DIR}" /bin/sh -c '
+      set -e
+      if pip3 install --no-cache-dir litellm pydantic pyyaml 2>/dev/null; then
+        :
+      else
+        pip3 install --break-system-packages --no-cache-dir litellm pydantic pyyaml
+      fi
+    ' || echo "[prepare_rootfs] WARNING: udagen pip install failed" >&2
+  fi
+}
+
 embed_openclaw_config() {
   local src="${REPO_ROOT}/openclaw-config"
   sudo rm -rf "${ROOTFS_DIR}/root/.openclaw"
@@ -182,6 +209,7 @@ if [[ "$CLI_ONLY" == true ]]; then
   fi
   embed_cli
   embed_skills
+  embed_udagen
   embed_openclaw_config
   repack
   echo "=== Done (cli-only) ==="
@@ -195,6 +223,7 @@ if [[ -d "${ROOTFS_DIR}/usr" ]] \
   echo "=== Incremental: embedding CLI + skills + openclaw-config (skip apk/chroot) ==="
   embed_cli
   embed_skills
+  embed_udagen
   embed_openclaw_config
   repack
   echo "=== Done (incremental) ==="
@@ -273,6 +302,7 @@ sudo chmod 1777 "${ROOTFS_DIR}/tmp"
 
 embed_cli
 embed_skills
+embed_udagen
 embed_openclaw_config
 repack
 
