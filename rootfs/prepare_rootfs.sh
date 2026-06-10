@@ -118,6 +118,13 @@ embed_udagen() {
   sudo rm -rf "${ROOTFS_DIR}/opt/udagen-lib/udagen/__pycache__"
   sudo mkdir -p "${ROOTFS_DIR}/opt/udagen/template-input"
   sudo mkdir -p "${ROOTFS_DIR}/opt/udagen/workspace"
+  local template_src="${REPO_ROOT}/aohp-app/AOHPAgentDriver/rootfs/udagen/template-input"
+  if [[ -d "$template_src" ]]; then
+    sudo cp -a "$template_src/." "${ROOTFS_DIR}/opt/udagen/template-input/"
+    echo "[prepare_rootfs] embedded udagen template-input from ${template_src}"
+  else
+    echo "[prepare_rootfs] no template-input at ${template_src}; leaving empty scaffold" >&2
+  fi
   echo "[prepare_rootfs] embedded udagen from ${src}"
 
   if [[ -x "${ROOTFS_DIR}/usr/bin/python3" ]]; then
