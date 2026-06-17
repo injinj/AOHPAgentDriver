@@ -8,6 +8,10 @@
         <permission name="android.permission.SCHEDULE_EXACT_ALARM" />
         <!-- Enable MyAccessibilityService via Settings.Secure on boot / app start (see SystemPrivilegeBootstrap). -->
         <permission name="android.permission.WRITE_SECURE_SETTINGS" />
+        <permission name="android.permission.SEND_SMS" />
+        <!-- Hardware still capture (sensor.camera.capture) -->
+        <permission name="android.permission.CAMERA" />
+        <permission name="android.permission.READ_MEDIA_IMAGES" />
     </privapp-permissions>
     <privapp-permissions package="com.aohp.security.consent">
         <permission name="android.permission.MANAGE_AOHP_VIRTUAL_DISPLAY" />
