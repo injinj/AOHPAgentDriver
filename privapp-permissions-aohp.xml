@@ -13,7 +13,4 @@
         <permission name="android.permission.CAMERA" />
         <permission name="android.permission.READ_MEDIA_IMAGES" />
     </privapp-permissions>
-    <privapp-permissions package="com.aohp.security.consent">
-        <permission name="android.permission.MANAGE_AOHP_VIRTUAL_DISPLAY" />
-    </privapp-permissions>
 </permissions>
