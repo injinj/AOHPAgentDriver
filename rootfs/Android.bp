@@ -11,3 +11,13 @@ prebuilt_etc {
     sub_dir: "aohp/rootfs-templates",
     filename: "alpine.tar.gz",
 }
+
+// Debian (glibc) rootfs template with official Node, OpenClaw preinstalled, build-essential, python3.
+// Build with: /aosp/templates/build-debian-template.sh <amd64|arm64>  (OPENCLAW=1), then copy the
+// matching debian-<arch>.tar.gz here as debian.tar.gz before the AOSP build.
+prebuilt_etc {
+    name: "aohp-rootfs-debian",
+    src: "debian.tar.gz",
+    sub_dir: "aohp/rootfs-templates",
+    filename: "debian.tar.gz",
+}
