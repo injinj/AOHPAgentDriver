@@ -14,7 +14,7 @@
 # Output: alpine.tar.gz in this directory.
 #
 # Env overrides:
-#   AOHP_NODE_VERSION   Node release tag to install (default v24.9.0).
+#   AOHP_NODE_VERSION   Node release tag to install (default v24.21.0; openclaw needs >=24.16).
 #                       Bump when a newer 24.x LTS is desired.
 #   AOHP_ROOTFS_WORK    Rootfs workdir base (default ~/.cache/aohp-rootfs-work).
 #
@@ -61,7 +61,7 @@ MIRROR="https://dl-cdn.alpinelinux.org/alpine"
 ROOTFS_URL="${MIRROR}/v${ALPINE_VERSION}/releases/${ARCH}/alpine-minirootfs-${ALPINE_RELEASE}-${ARCH}.tar.gz"
 
 # Node 24 LTS (musl build) from unofficial-builds.nodejs.org — ships with npm.
-NODE_VERSION="${AOHP_NODE_VERSION:-v24.9.0}"
+NODE_VERSION="${AOHP_NODE_VERSION:-v24.21.0}"
 case "$ARCH" in
   x86_64)  NODE_ARCH="x64" ;;
   aarch64) NODE_ARCH="arm64" ;;
@@ -200,7 +200,9 @@ PY
 
 repack() {
   echo "=== Packing rootfs template ==="
-  (cd "${ROOTFS_DIR}" && sudo tar czf "${OUTPUT}" .)
+  # aohp-containerd's extractor (tar_gz_extract.cpp) skips hardlink entries, so store
+  # hardlinked files as regular files (npm creates a few, e.g. esbuild/bin/esbuild).
+  (cd "${ROOTFS_DIR}" && sudo tar czf "${OUTPUT}" --hard-dereference .)
   ls -lh "${OUTPUT}"
 }
 
