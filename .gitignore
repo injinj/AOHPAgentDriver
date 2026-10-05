@@ -8,3 +8,5 @@ AOHPAgentDriver.apk
 rootfs/debian.tar.gz
 rootfs/.templates-release
 rootfs/*.tar.gz.bak-*
+rootfs/.stock-release
+AOHPAgentDriver.apk.bak-*
