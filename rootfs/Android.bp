@@ -12,12 +12,51 @@ prebuilt_etc {
     filename: "alpine.tar.gz",
 }
 
-// Debian (glibc) rootfs template with official Node, OpenClaw preinstalled, build-essential, python3.
-// Build with: /aosp/templates/build-debian-template.sh <amd64|arm64>  (OPENCLAW=1), then copy the
-// matching debian-<arch>.tar.gz here as debian.tar.gz before the AOSP build.
+// Debian (glibc) rootfs template: official Node, OpenClaw preinstalled, build-essential, python3, aohp CLI + skills.
+// Built reproducibly by github.com/injinj/aohp-agents template/build-template.sh debian arm64 and published as a
+// 'templates-*' GitHub release there. Fetch with vendor/aohp/fetch-prebuilts.sh (sha256-verified) -> debian.tar.gz here.
 prebuilt_etc {
     name: "aohp-rootfs-debian",
     src: "debian.tar.gz",
     sub_dir: "aohp/rootfs-templates",
     filename: "debian.tar.gz",
+}
+
+// Optional Fedora 44 / Arch Linux templates from the same release (vendor/aohp/fetch-prebuilts.sh fedora arch).
+// Soong resolves every module's src at analysis time even when the module is not installed, so a plain prebuilt_etc
+// would break the build whenever the tarball is absent. These modules are therefore disabled unless the soong config
+// bool aohp.rootfs_<distro> is set — vendor/aohp/aohp.mk sets it (and adds the PRODUCT_PACKAGES entry) only when
+// rootfs/<distro>.tar.gz exists. Opt-in costs nothing when the files are missing.
+soong_config_module_type {
+    name: "aohp_rootfs_prebuilt_etc",
+    module_type: "prebuilt_etc",
+    config_namespace: "aohp",
+    bool_variables: ["rootfs_fedora", "rootfs_arch"],
+    properties: ["enabled", "src"],
+}
+
+aohp_rootfs_prebuilt_etc {
+    name: "aohp-rootfs-fedora",
+    enabled: false,
+    sub_dir: "aohp/rootfs-templates",
+    filename: "fedora.tar.gz",
+    soong_config_variables: {
+        rootfs_fedora: {
+            enabled: true,
+            src: "fedora.tar.gz",
+        },
+    },
+}
+
+aohp_rootfs_prebuilt_etc {
+    name: "aohp-rootfs-arch",
+    enabled: false,
+    sub_dir: "aohp/rootfs-templates",
+    filename: "arch.tar.gz",
+    soong_config_variables: {
+        rootfs_arch: {
+            enabled: true,
+            src: "arch.tar.gz",
+        },
+    },
 }
